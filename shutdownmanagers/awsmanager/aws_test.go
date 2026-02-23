@@ -8,7 +8,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/Zemanta/gracefulshutdown"
+	"github.com/outbrain/gracefulshutdown"
 
 	"github.com/aws/aws-sdk-go/service/sqs"
 )

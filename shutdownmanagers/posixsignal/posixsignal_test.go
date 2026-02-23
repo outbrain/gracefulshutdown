@@ -5,7 +5,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/Zemanta/gracefulshutdown"
+	"github.com/outbrain/gracefulshutdown"
 )
 
 type startShutdownFunc func(sm gracefulshutdown.ShutdownManager)
