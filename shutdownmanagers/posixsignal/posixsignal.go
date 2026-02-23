@@ -10,7 +10,7 @@ import (
 	"os/signal"
 	"syscall"
 
-	"github.com/Zemanta/gracefulshutdown"
+	"github.com/outbrain/gracefulshutdown"
 )
 
 const Name = "PosixSignalManager"

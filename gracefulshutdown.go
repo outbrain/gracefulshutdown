@@ -1,26 +1,26 @@
 /*
-
 Providing shutdown callbacks for graceful app shutdown
 
-Installation
+# Installation
 
 To install run:
 
-	go get github.com/Zemanta/gracefulshutdown
+	go get github.com/outbrain/gracefulshutdown
 
-Example - posix signals
+# Example - posix signals
 
 Graceful shutdown will listen for posix SIGINT and SIGTERM signals.
 When they are received it will run all callbacks in separate go routines.
 When callbacks return, the application will exit with os.Exit(0)
+
 	package main
 
 	import (
 		"fmt"
 		"time"
 
-		"github.com/Zemanta/gracefulshutdown"
-		"github.com/Zemanta/gracefulshutdown/shutdownmanagers/posixsignal"
+		"github.com/outbrain/gracefulshutdown"
+		"github.com/outbrain/gracefulshutdown/shutdownmanagers/posixsignal"
 	)
 
 	func main() {
@@ -48,7 +48,7 @@ When callbacks return, the application will exit with os.Exit(0)
 		time.Sleep(time.Hour)
 	}
 
-Example - posix signals with error handler
+# Example - posix signals with error handler
 
 The same as above, except now we set an ErrorHandler that prints the
 error returned from ShutdownCallback.
@@ -60,8 +60,8 @@ error returned from ShutdownCallback.
 		"time"
 		"errors"
 
-		"github.com/Zemanta/gracefulshutdown"
-		"github.com/Zemanta/gracefulshutdown/shutdownmanagers/posixsignal"
+		"github.com/outbrain/gracefulshutdown"
+		"github.com/outbrain/gracefulshutdown/shutdownmanagers/posixsignal"
 	)
 
 	func main() {
@@ -94,7 +94,7 @@ error returned from ShutdownCallback.
 		time.Sleep(time.Hour)
 	}
 
-Example - aws
+# Example - aws
 
 Graceful shutdown will listen for SQS messages on "example-sqs-queue".
 If a termination message has current EC2 instance id,
@@ -105,15 +105,16 @@ When callbacks return, the application will call aws api CompleteLifecycleAction
 The callback will delay only if shutdown was initiated by awsmanager.
 If the message does not have current instance id, it will forward the
 message to correct instance via http on port 7999.
+
 	package main
 
 	import (
 		"fmt"
 		"time"
 
-		"github.com/Zemanta/gracefulshutdown"
-		"github.com/Zemanta/gracefulshutdown/shutdownmanagers/awsmanager"
-		"github.com/Zemanta/gracefulshutdown/shutdownmanagers/posixsignal"
+		"github.com/outbrain/gracefulshutdown"
+		"github.com/outbrain/gracefulshutdown/shutdownmanagers/awsmanager"
+		"github.com/outbrain/gracefulshutdown/shutdownmanagers/posixsignal"
 	)
 
 	func main() {
@@ -251,6 +252,7 @@ func (gs *GracefulShutdown) AddShutdownManager(manager ShutdownManager) {
 //
 // You can provide anything that implements ShutdownCallback interface,
 // or you can supply a function like this:
+//
 //	AddShutdownCallback(gracefulshutdown.ShutdownFunc(func() error {
 //		// callback code
 //		return nil
@@ -264,6 +266,7 @@ func (gs *GracefulShutdown) AddShutdownCallback(shutdownCallback ShutdownCallbac
 //
 // You can provide anything that implements ErrorHandler interface,
 // or you can supply a function like this:
+//
 //	SetErrorHandler(gracefulshutdown.ErrorFunc(func (err error) {
 //		// handle error
 //	}))

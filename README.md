@@ -1,4 +1,4 @@
-# gracefulshutdown [![Build Status](https://travis-ci.org/Zemanta/gracefulshutdown.svg)](https://travis-ci.org/Zemanta/gracefulshutdown)
+# gracefulshutdown
 
 Providing shutdown callbacks for graceful app shutdown
 
@@ -13,16 +13,16 @@ We decided to use the same callback pattern in case of handling POSIX signals.
 ## Installation
 
 ```
-go get github.com/Zemanta/gracefulshutdown
+go get github.com/outbrain/gracefulshutdown
 ```
 
 ## Documentation
 
-`github.com/Zemanta/gracefulshutdown` documentation is available on [godoc](http://godoc.org/github.com/Zemanta/gracefulshutdown).
+`github.com/outbrain/gracefulshutdown` documentation is available on [godoc](http://godoc.org/github.com/outbrain/gracefulshutdown).
 
 Both `ShutdownManagers` are also documented:
-- [`PosixSignalManager`](http://godoc.org/github.com/Zemanta/gracefulshutdown/shutdownmanagers/posixsignal)
-- [`AwsManager`](http://godoc.org/github.com/Zemanta/gracefulshutdown/shutdownmanagers/awsmanager)
+- [`PosixSignalManager`](http://godoc.org/github.com/outbrain/gracefulshutdown/shutdownmanagers/posixsignal)
+- [`AwsManager`](http://godoc.org/github.com/outbrain/gracefulshutdown/shutdownmanagers/awsmanager)
 
 
 ## Example - AWS Autoscale, Scale-in Event
@@ -38,9 +38,9 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/Zemanta/gracefulshutdown"
-	"github.com/Zemanta/gracefulshutdown/shutdownmanagers/awsmanager"
-	"github.com/Zemanta/gracefulshutdown/shutdownmanagers/posixsignal"
+	"github.com/outbrain/gracefulshutdown"
+	"github.com/outbrain/gracefulshutdown/shutdownmanagers/awsmanager"
+	"github.com/outbrain/gracefulshutdown/shutdownmanagers/posixsignal"
 )
 
 func main() {
@@ -95,8 +95,8 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/Zemanta/gracefulshutdown"
-	"github.com/Zemanta/gracefulshutdown/shutdownmanagers/posixsignal"
+	"github.com/outbrain/gracefulshutdown"
+	"github.com/outbrain/gracefulshutdown/shutdownmanagers/posixsignal"
 )
 
 func main() {
@@ -137,8 +137,8 @@ import (
 	"time"
 	"errors"
 
-	"github.com/Zemanta/gracefulshutdown"
-	"github.com/Zemanta/gracefulshutdown/shutdownmanagers/posixsignal"
+	"github.com/outbrain/gracefulshutdown"
+	"github.com/outbrain/gracefulshutdown/shutdownmanagers/posixsignal"
 )
 
 func main() {
