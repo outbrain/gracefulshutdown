@@ -216,6 +216,7 @@ type GSInterface interface {
 // GracefulShutdown is main struct that handles ShutdownCallbacks and
 // ShutdownManagers. Initialize it with New.
 type GracefulShutdown struct {
+	mu           sync.Mutex
 	callbacks    []ShutdownCallback
 	managers     []ShutdownManager
 	errorHandler ErrorHandler
@@ -258,6 +259,9 @@ func (gs *GracefulShutdown) AddShutdownManager(manager ShutdownManager) {
 //		return nil
 //	}))
 func (gs *GracefulShutdown) AddShutdownCallback(shutdownCallback ShutdownCallback) {
+	gs.mu.Lock()
+	defer gs.mu.Unlock()
+
 	gs.callbacks = append(gs.callbacks, shutdownCallback)
 }
 
@@ -271,6 +275,9 @@ func (gs *GracefulShutdown) AddShutdownCallback(shutdownCallback ShutdownCallbac
 //		// handle error
 //	}))
 func (gs *GracefulShutdown) SetErrorHandler(errorHandler ErrorHandler) {
+	gs.mu.Lock()
+	defer gs.mu.Unlock()
+
 	gs.errorHandler = errorHandler
 }
 
@@ -281,8 +288,13 @@ func (gs *GracefulShutdown) SetErrorHandler(errorHandler ErrorHandler) {
 func (gs *GracefulShutdown) StartShutdown(sm ShutdownManager) {
 	gs.ReportError(sm.ShutdownStart())
 
+	gs.mu.Lock()
+	callbacks := make([]ShutdownCallback, len(gs.callbacks))
+	copy(callbacks, gs.callbacks)
+	gs.mu.Unlock()
+
 	var wg sync.WaitGroup
-	for _, shutdownCallback := range gs.callbacks {
+	for _, shutdownCallback := range callbacks {
 		wg.Add(1)
 		go func(shutdownCallback ShutdownCallback) {
 			defer wg.Done()
@@ -299,7 +311,15 @@ func (gs *GracefulShutdown) StartShutdown(sm ShutdownManager) {
 // ReportError is a function that can be used to report errors to
 // ErrorHandler. It is used in ShutdownManagers.
 func (gs *GracefulShutdown) ReportError(err error) {
-	if err != nil && gs.errorHandler != nil {
-		gs.errorHandler.OnError(err)
+	if err == nil {
+		return
+	}
+
+	gs.mu.Lock()
+	errorHandler := gs.errorHandler
+	gs.mu.Unlock()
+
+	if errorHandler != nil {
+		errorHandler.OnError(err)
 	}
 }
